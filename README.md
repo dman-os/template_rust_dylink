@@ -67,8 +67,13 @@ That `upgrade` command is part of the [`cargo-edit`][cedit] extension. Do..
 
 ...to install it.
 
+### Acknowledgements
+
+- [Matthias Endler](https://endler.dev/about)'s [Tips for Faster Rust Compile Times](https://endler.dev/2020/rust-compile-times/).
+- The [`Bevy`] authors.
+
 [lld]: https://lld.llvm.org/
 [mold]: https://github.com/rui314/mold/
-[bevy]: https://github.com/bevyengine/bevy
+[bevy]: https://bevyengine.org/
 [cedit]: https://lib.rs/crates/cargo-edit
-[sqlx]: https://github.com/launchbadge/sqlx
+[sqlx]: https://lib.rs/crates/sqlx
