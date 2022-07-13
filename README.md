@@ -13,7 +13,7 @@ Features include:
 
 > Note: before you commmit to this, be sure to give check if using the [`mold`][mold] linker alone can ease your compilation time pains. I've found that it is more than fast enough for most usecases, especially with how hacky and painful this template can get. This template itself is configured to use [`lld`][lld], which `mold` hooks into. This can be disable by commenting out marked sections of `.cargo/config.toml`.
 
-This *hack* is a modification of the one used in the [bevy][bevy] repository and is implemented as following:
+This *hack* is a modification of the one used in the [`bevy`][bevy] repository and is implemented as following:
 
 * External dependencies are pulled through a crate found at `crates/deps`.
 *  A dummy `dylinb` crate at `crates/dylink` which also relies on `deps`. 
@@ -59,18 +59,24 @@ If you have build time machinations, especially generative ones, you should be a
 
 ...I usually include in most projects.
 
-Be sure to run `cargo upgrade --workspace --skip-compatible` afterwards to make use of the latest versions.
+Be sure to run...
+```
+cargo upgrade --workspace --skip-compatible
+``` 
+...afterwards to make use of the latest versions.
 
 That `upgrade` command is part of the [`cargo-edit`][cedit] extension. Do..
 
-```$ cargo install --locked cargo-edit```
+```
+$ cargo install --locked cargo-edit
+```
 
 ...to install it.
 
 ### Acknowledgements
 
 - [Matthias Endler](https://endler.dev/about)'s [Tips for Faster Rust Compile Times](https://endler.dev/2020/rust-compile-times/).
-- The [`Bevy`] authors.
+- The [`bevy`][bevy] authors.
 
 [lld]: https://lld.llvm.org/
 [mold]: https://github.com/rui314/mold/
