@@ -11,7 +11,7 @@ Features include:
 
 ...for faster compilation times. 
 
-> Note: before you commmit to this, be sure to give check if using the [`mold`][mold] linker alone can ease your compilation time pains. I've found that it is more than fast enough for most usecases, especially with how hacky and painful this template can get. This template itself is configured to use [`lld`][lld], which `mold` hooks into. This can be disable by commenting out marked sections of `.cargo/config.toml`.
+> Note: before you commmit to this, and if you're on Linux, be sure to give check if using the [`mold`][mold] linker alone can ease your compilation time pains. I've found that it is more than fast enough for most usecases, especially with how hacky and painful this template can get. If you're having linking issues with `mold`, you can also go for [`lld`][lld], which is faster than the default (GNU gold). This template is itself configured to use `mold` by default on Linux, `lld` on Windows and [`zld`][zld] on macOS. This can be disable by commenting out marked sections of `.cargo/config.toml`.
 
 This *hack* is a modification of the one used in the [`bevy`][bevy] repository and is implemented as following:
 
@@ -24,18 +24,17 @@ This *hack* is a modification of the one used in the [`bevy`][bevy] repository a
 This introduces a lot of...complications. Namely:
 
 * You'll have to have `use deps::*;` at the top of each source file in order to access the dependencies.
-  - This is can be used as a local prelude of sorts. All items you expose from `crates/deps/lib.rs` will awlays be availaible.
 * Some dependencies will malfunction, usually their procedural macros. This occurs with some approaches for source crate resolution isn't amenable for re-exporting.
    - Sometimes there'll be a workaround for them like for example:
        + Serde exposes an API for changing what name it's macros resolve to. 
-         * Add the atttribute `#[serde(crate = "serde")]` to your type declarations.
+         * Add the atttribute `#[serde(crate = "serde")]` to your serialized type declarations to get it working.
        + Bevy macros resolve their crates at the `call_site`. Adding the following line the import statements or better yet, to `crates/deps/lib.rs` to avoid deduplication resolves such cases:
            * `pub use bevy::{ecs as bevy_ecs, reflect as bevy_reflect};`
            * Use more `_ as _` expresssions if bevy exports macros from other sub crates.
    - Some macros, like those in [`sqlx`][sqlx], are not re-exportable.
        + Disabling dynamic linking will solve all issues in that case.
            * Remove `dylink` from the default features in the root `Cargo.toml` manifest.
-       + If you really have bad compile times, you can move where the troublsome crates are specified from `crates/deps/Cargo.toml` to the root `Cargo.toml`. Some notices:
+       + As an alternative, if you really have bad compile times, you can move where the troublsome crates are specified from `crates/deps/Cargo.toml` to the root `Cargo.toml`. Some notices:
            * If the crate has a lot of dependencies, they all won't be dynamically linked. 
              - If this is the crate responsible for the bad compilation times in the first place, this renders all this voodoo moot.
            * If you have additional crates in your workspace that rely on this dependency, you'll need to specify it in their manifests as well.
@@ -49,7 +48,7 @@ This introduces a lot of...complications. Namely:
             +  TODO: replace `rg` with `grep` here.
        * TODO: simlar one liner for windows.
 
-If you have build time machinations, especially generative ones, you should be able to specify them at the `deps` crate and should work as specified usually.
+If you have build time machinations, especially generative ones, you should be able to specify them at the `deps` crate and should work as specified...usually.
 
 ## Cargo XTASK stubs
 
@@ -78,8 +77,9 @@ $ cargo install --locked cargo-edit
 - [Matthias Endler](https://endler.dev/about)'s [Tips for Faster Rust Compile Times](https://endler.dev/2020/rust-compile-times/).
 - The [`bevy`][bevy] authors.
 
-[lld]: https://lld.llvm.org/
 [mold]: https://github.com/rui314/mold/
+[lld]: https://lld.llvm.org/
+[zld]: https://github.com/michaeleisel/zld
 [bevy]: https://bevyengine.org/
 [cedit]: https://lib.rs/crates/cargo-edit
 [sqlx]: https://lib.rs/crates/sqlx
