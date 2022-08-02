@@ -1,5 +1,5 @@
 [package]
-name = "rust-template-basic"
+name = "template_rust_dylink"
 version = "0.1.0"
 edition = "2021"
 

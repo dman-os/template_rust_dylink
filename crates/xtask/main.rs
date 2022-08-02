@@ -21,19 +21,11 @@ enum Commands {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::parse();
-    let mut cargo_cmd = std::env::var("XTASK_CARGO_CMD")
-        .map(|cmd| std::process::Command::new(cmd))
-        .unwrap_or_else(|_| {
-            if let Ok(_) = std::process::Command::new("mold").output() {
-                let mut cmd = std::process::Command::new("mold");
-                cmd.args(["-run cargo"]);
-                cmd
-            } else {
-                std::process::Command::new("cargo")
-            }
-        });
+    let mut _cargo_cmd = std::process::Command::new(
+        std::env::var("XTASK_CARGO_CMD").unwrap_or_else(|_| "cargo".into()),
+    );
     match args.commands {
-        Commands::Test { args } => {
+        Commands::Test { .. } => {
             println!("TODO: nextest support");
             // cargo_cmd.args([
             //     "nextest",

@@ -1,4 +1,4 @@
-# > *rust-template-basic*
+# > *template_rust_dylink*
 
 A starter template best suited for rust repositories that:
 
