@@ -16,7 +16,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .map(|(name, _)| {
                 format!("pub use {};\n", {
                     // if alias specified, use that
-                    name.replace("-", "_")
+                    name.replace('-', "_")
                 })
             })
             .collect::<String>()
